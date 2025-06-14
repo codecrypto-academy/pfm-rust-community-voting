@@ -36,9 +36,9 @@ describe("community-management", () => {
         await program.methods
         .initializeCommunity(communityName, communityDescription)
         .accounts({
-            community: communityPda,
+            // community: communityPda,
             admin: admin.publicKey,
-            systemProgram: anchor.web3.SystemProgram.programId,
+            // systemProgram: anchor.web3.SystemProgram.programId,
         })
         .signers([admin])
         .rpc();
@@ -59,10 +59,10 @@ describe("community-management", () => {
         await program.methods
         .joinCommunity()
         .accounts({
-            membership: membershipPda,
+            // membership: membershipPda,
             community: communityPda,
             member: member1.publicKey,
-            systemProgram: anchor.web3.SystemProgram.programId,
+            // systemProgram: anchor.web3.SystemProgram.programId,
         })
         .signers([member1])
         .rpc();
@@ -114,11 +114,11 @@ describe("community-management", () => {
         await program.methods
         .createPoll(question, options, new anchor.BN(endTime))
         .accounts({
-            poll: pollPda,
+            // poll: pollPda,
             community: communityPda,
             membership: membershipPda,
             creator: member1.publicKey,
-            systemProgram: anchor.web3.SystemProgram.programId,
+            // systemProgram: anchor.web3.SystemProgram.programId,
         })
         .signers([member1])
         .rpc();
@@ -140,10 +140,10 @@ describe("community-management", () => {
         await program.methods
         .joinCommunity()
         .accounts({
-            membership: membershipPda2,
+            // membership: membershipPda2,
             community: communityPda,
             member: member2.publicKey,
-            systemProgram: anchor.web3.SystemProgram.programId,
+            // systemProgram: anchor.web3.SystemProgram.programId,
         })
         .signers([member2])
         .rpc();
@@ -159,7 +159,7 @@ describe("community-management", () => {
         .rpc();
 
         // Ahora votar
-        const communityAccount = await program.account.community.fetch(communityPda);
+        // const communityAccount = await program.account.community.fetch(communityPda);
         const [pollPda] = anchor.web3.PublicKey.findProgramAddressSync(
             [Buffer.from("poll"), communityPda.toBuffer(), new anchor.BN(0).toArrayLike(Buffer, "le", 8)],
             program.programId
@@ -173,11 +173,11 @@ describe("community-management", () => {
         await program.methods
         .castVote(1) // Votar por "Azul" (índice 1)
         .accounts({
-            vote: votePda,
+            // vote: votePda,
             poll: pollPda,
             membership: membershipPda2,
             voter: member2.publicKey,
-            systemProgram: anchor.web3.SystemProgram.programId,
+            // systemProgram: anchor.web3.SystemProgram.programId,
         })
         .signers([member2])
         .rpc();
@@ -202,20 +202,20 @@ describe("community-management", () => {
             program.programId
         );
 
-        const [votePda] = anchor.web3.PublicKey.findProgramAddressSync(
-            [Buffer.from("vote"), pollPda.toBuffer(), member2.publicKey.toBuffer()],
-            program.programId
-        );
+        // const [votePda] = anchor.web3.PublicKey.findProgramAddressSync(
+        //     [Buffer.from("vote"), pollPda.toBuffer(), member2.publicKey.toBuffer()],
+        //     program.programId
+        // );
 
         try {
             await program.methods
             .castVote(0) // Intentar votar de nuevo
             .accounts({
-                vote: votePda,
+                // vote: votePda,
                 poll: pollPda,
                 membership: membershipPda2,
                 voter: member2.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId,
+                // systemProgram: anchor.web3.SystemProgram.programId,
             })
             .signers([member2])
             .rpc();
