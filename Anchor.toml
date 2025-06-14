@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-pfm_rust = "Bih2PrW73UqLXvLqJFRtyUbxTW5eArom9ShWgk69Aa3z"
+community_voting = "CgEPCH2sZKj5Zi7Ms2pJsvi4KKVde76GYbSRnfePGHtn"
 
 [registry]
 url = "https://api.apr.dev"
