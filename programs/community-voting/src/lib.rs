@@ -2,7 +2,7 @@
 #![allow(deprecated)]
 use anchor_lang::prelude::*;
 
-declare_id!("CgEPCH2sZKj5Zi7Ms2pJsvi4KKVde76GYbSRnfePGHtn");
+declare_id!("BahxHxGA1bq2uVGn9iPyzizFvccY779hFj7UHNnCgNJJ");
 
 #[program]
 pub mod community_management {
