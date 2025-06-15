@@ -1,4 +1,4 @@
-# PFM Rust — Solana: Community Voting
+# PFM Rust — Solana: Community Voting Program
 
 Solana smart contract for managing community membership and polls using Anchor.
 
