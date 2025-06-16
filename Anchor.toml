@@ -8,11 +8,14 @@ skip-lint = false
 [programs.localnet]
 community_voting = "BahxHxGA1bq2uVGn9iPyzizFvccY779hFj7UHNnCgNJJ"
 
+[programs.devnet]
+community_voting = "BahxHxGA1bq2uVGn9iPyzizFvccY779hFj7UHNnCgNJJ"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
