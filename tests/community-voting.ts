@@ -24,7 +24,7 @@ describe("community-management", () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
     });
 
-    it("Debe inicializar una nueva comunidad", async () => {
+    it("Debe inicializar una nueva comunidad - crear transaction", async () => {
         const communityName = "Test Community";
         const communityDescription = "Una comunidad de prueba para testing";
 
@@ -33,15 +33,29 @@ describe("community-management", () => {
             program.programId
         );
 
-        await program.methods
+        const initializeCommunityIx = await program.methods
         .initializeCommunity(communityName, communityDescription)
         .accounts({
             // community: communityPda,
             admin: admin.publicKey,
             // systemProgram: anchor.web3.SystemProgram.programId,
         })
-        .signers([admin])
-        .rpc();
+        .instruction();
+
+        // Crear una nueva transacción y añadir la instrucción
+        const transaction = new anchor.web3.Transaction().add(initializeCommunityIx);
+        transaction.feePayer = provider.wallet.publicKey;
+
+        // Enviar la transacción con el usuario como fee payer
+        const tx = await anchor.web3.sendAndConfirmTransaction(
+            provider.connection,
+            transaction,
+            [admin, provider.wallet.payer]
+        );
+
+        console.log('\n');
+        console.log('tx: ', tx);
+        console.log('\n');
 
         const communityAccount = await program.account.community.fetch(communityPda);
         expect(communityAccount.name).to.equal(communityName);
@@ -49,6 +63,32 @@ describe("community-management", () => {
         expect(communityAccount.admin.toString()).to.equal(admin.publicKey.toString());
         expect(communityAccount.memberCount.toNumber()).to.equal(0);
     });
+
+    // it("Debe inicializar una nueva comunidad", async () => {
+    //     const communityName = "Test Community";
+    //     const communityDescription = "Una comunidad de prueba para testing";
+
+    //     [communityPda, communityBump] = anchor.web3.PublicKey.findProgramAddressSync(
+    //         [Buffer.from("community"), Buffer.from(communityName)],
+    //         program.programId
+    //     );
+
+    //     const tx = await program.methods
+    //     .initializeCommunity(communityName, communityDescription)
+    //     .accounts({
+    //         // community: communityPda,
+    //         admin: admin.publicKey,
+    //         // systemProgram: anchor.web3.SystemProgram.programId,
+    //     })
+    //     .signers([admin])
+    //     .rpc();
+
+    //     const communityAccount = await program.account.community.fetch(communityPda);
+    //     expect(communityAccount.name).to.equal(communityName);
+    //     expect(communityAccount.description).to.equal(communityDescription);
+    //     expect(communityAccount.admin.toString()).to.equal(admin.publicKey.toString());
+    //     expect(communityAccount.memberCount.toNumber()).to.equal(0);
+    // });
 
     it("Debe permitir que un usuario solicite unirse a la comunidad", async () => {
         const [membershipPda] = anchor.web3.PublicKey.findProgramAddressSync(
